@@ -5,9 +5,7 @@ import './multiple.css'
 
 export const MultipleCustomHook = () => {
 
-    const { number, sumNumber, restNumber } = useCounter(
-        
-    )
+    const { number, sumNumber, restNumber } = useCounter()
 
     console.log(number)
     const { loading, data } = useFetch(`https://www.breakingbadapi.com/api/quotes/${number}`)

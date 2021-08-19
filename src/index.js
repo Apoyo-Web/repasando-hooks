@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MultipleCustomHook } from './components/examples/MultipleCustomHook';
+// import { MultipleCustomHook } from './components/examples/MultipleCustomHook';
+import { TodoReducer } from './useReducer/TodoReducer';
 // import { HookApp} from './HookApp';
 
 
@@ -8,7 +9,7 @@ import { MultipleCustomHook } from './components/examples/MultipleCustomHook';
 
 ReactDOM.render(
   
-    <MultipleCustomHook />,
+    <TodoReducer />,
   
   document.getElementById('root')
 );
