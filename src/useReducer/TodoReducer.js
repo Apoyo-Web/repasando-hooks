@@ -1,23 +1,68 @@
-import React, { useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
+import { useForm } from '../hook/useForm'
+import { todoReducer } from './appReducer'
 
 
 import './style.css'
 export const TodoReducer = () => {
 
-    const initialState = [
-        {
+    const init = () => {
+        return JSON.parse(localStorage.getItem('todos')) || []
+    }
+
+    const [todos, dispatch] = useReducer(todoReducer, [], init)
+
+    useEffect(() => {
+       localStorage.setItem('todos',JSON.stringify(todos))
+
+   },[todos])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        if (desc.trim().length <= 1) {
+            return
+        }
+
+
+        const newTodo = {
             id: new Date().getTime(),
-            desc: 'Aprender React',
+            desc: desc,
             done: false
         }
-    ]
 
-    const [todos] = useReducer(TodoReducer, initialState)
+        const action = {
+            type: 'add',
+            payload: newTodo
+        }
 
-    console.log(todos)
+        dispatch(action)
+        reset()
+    }
+    const hadleDelete = (todoId) => {
+    
+        const action = {
+            type: 'delete',
+            payload: todoId
+        }
+        
+        dispatch(action)
+    }
+    
+    const hadlToogle = (todoId) => {
+        const action = {
+            type: 'toogle',
+            payload: todoId
+        }
+
+        dispatch(action)
+    }
+    const [{desc}, handleInputChange, reset]= useForm({
+        desc: ""
+    })
     return (
         <div>
-            <h1>TodoApp ({todos.length})</h1>
+            <h1>Total de tareas ({todos.length})</h1>
             <hr />
             <div className="row">
                 <div className="col-6">
@@ -28,8 +73,8 @@ export const TodoReducer = () => {
                                     key={todo.id}
                                     className="list-group-item"
                                 >
-                                    <p className="text-center"> {i + 1} {todo.desc}</p>
-                                    <button className="btn btn-danger">
+                                    <p className={`${todo.done && 'complete'}`} onClick={()=>hadlToogle(todo.id)}> {i + 1} {todo.desc}</p>
+                                    <button className="btn btn-danger" onClick={()=>hadleDelete(todo.id)}>
                                         Borrar
                                     </button>
                                 </li>
@@ -45,17 +90,19 @@ export const TodoReducer = () => {
                         <h4>Agregar TODO</h4>
                         <hr />
 
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <input
                                 type="text"
                                 name="desc"
                                 className="form-control"
-                                placeholder="Aprender..."
-                                autoComplete="off"
+                                placeholder="Introduce una tarea..."
+                            autoComplete="off"
+                            onChange={handleInputChange}
+                            value={desc}
                             />
                             <div className="d-grid gap-2">
                 
-                                <button className="btn btn-outline-primary mt-1">Agregar</button>
+                                <button className="btn btn-outline-primary mt-1" type= "submit">Agregar</button>
                             </div>
                         </form>
                 </div>
