@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer } from 'react'
+import { TodoList } from '../components/TodoList'
 import { useForm } from '../hook/useForm'
 import { todoReducer } from './appReducer'
 
@@ -39,7 +40,7 @@ export const TodoReducer = () => {
         dispatch(action)
         reset()
     }
-    const hadleDelete = (todoId) => {
+    const handleDelete = (todoId) => {
     
         const action = {
             type: 'delete',
@@ -49,7 +50,7 @@ export const TodoReducer = () => {
         dispatch(action)
     }
     
-    const hadlToogle = (todoId) => {
+    const handleToggle = (todoId) => {
         const action = {
             type: 'toogle',
             payload: todoId
@@ -66,22 +67,12 @@ export const TodoReducer = () => {
             <hr />
             <div className="row">
                 <div className="col-6">
-                    <ul className="list-group list-group-flush">
-                        {
-                            todos.map((todo,i) => (
-                                <li
-                                    key={todo.id}
-                                    className="list-group-item"
-                                >
-                                    <p className={`${todo.done && 'complete'}`} onClick={()=>hadlToogle(todo.id)}> {i + 1} {todo.desc}</p>
-                                    <button className="btn btn-danger" onClick={()=>hadleDelete(todo.id)}>
-                                        Borrar
-                                    </button>
-                                </li>
-                            ))
-                            }
-                            
-                    </ul>
+                    <TodoList
+                        todos={todos}
+                        handleDelete={handleDelete}
+                        handleToggle= {handleToggle}
+                    
+                    />
                 </div>
                 
                 
